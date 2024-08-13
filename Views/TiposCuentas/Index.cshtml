@@ -1,0 +1,72 @@
+﻿@{
+    ViewData["Title"] = "Tipos Cuentas";
+}
+
+<h1 class="text-center mt-4 mb-5">Tipos de cuentas</h1>
+
+<div class="container">
+    <h5 class="mb-4 text-muted">El tipo de cuenta se refiere a cómo podemos agrupar cuentas.</h5>
+
+    <a asp-action="Crear" class="btn btn-primary mb-4">Crear nuevo</a>
+
+    <table class="table table-hover custom-table">
+        <thead>
+            <tr>
+                <th class="text-center">Acciones</th>
+                <th class="text-center">Nombre</th>
+            </tr>
+        </thead>
+        <tbody id="reordenable">
+            @foreach (var tipoCuenta in Model)
+            {
+                <tr>
+                    <td class="text-center">
+                        <input type="hidden" value="@tipoCuenta.id" class="ids" />
+                        <a asp-action="Editar" asp-route-id="@tipoCuenta.id" class="btn btn-primary">Editar</a>
+                        <a asp-action="Borrar" asp-route-id="@tipoCuenta.id" class="btn btn-danger  ml-2">Borrar</a>
+                    </td>
+                    <td class="text-center">@tipoCuenta.Nombre</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+@section Scripts {
+    <script>
+        const urlOrdenar = '@Url.Action("Ordenar")';
+        $(function () {
+            $("#reordenable").sortable({
+                stop: async function (e, ui) {
+                    await actualizarOrdenDeCuentas();
+                }
+            });
+
+            async function actualizarOrdenDeCuentas() {
+                const ids = obtenerIdsDeElementos();
+                await enviarIdsBackend(ids);
+            }
+
+            function obtenerIdsDeElementos() {
+                const ids = $(".ids").map(function () {
+                    return $(this).val();
+                }).get();
+                return ids;
+            }
+
+            async function enviarIdsBackend(ids) {
+                var data = JSON.stringify(ids);
+
+                await fetch(urlOrdenar, {
+                    method: 'POST',
+                    body: data,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+            }
+        })
+    </script>
+}

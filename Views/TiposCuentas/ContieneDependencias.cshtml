@@ -1,0 +1,22 @@
+﻿@model Tipocuenta
+@{
+
+    ViewData["Title"] = "ContieneDependencias";
+}
+
+
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card border-danger">
+                <div class="card-body">
+
+                    <h4 class="card-title text-danger">¡Error!</h4>
+                    <p class="card-text text-danger">Existen cuentas relacionadas con el tipo cuenta: 
+                        @Model.Nombre .Por favor, elimine las cuentas relacionadas antes de eliminar esta cuenta.</p>
+                    <a asp-action="Index" class="btn btn-danger">Volver al Inicio</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

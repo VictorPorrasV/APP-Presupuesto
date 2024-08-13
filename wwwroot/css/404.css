@@ -1,0 +1,25 @@
+﻿
+
+.page_404 {
+    padding: 40px 0;
+    background: #fff;
+    font-family: 'Poppins';
+}
+
+    .page_404 img {
+        width: 100%;
+    }
+
+.four_zero_four_bg {
+    background: url('../bg.gif');
+    height: 400px;
+    background-position: center;
+}
+
+
+
+.content_box_404 {
+    margin-top: -50px;
+}
+
+

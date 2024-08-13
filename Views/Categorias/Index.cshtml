@@ -1,0 +1,86 @@
+﻿@model IEnumerable<Categorias>
+@{
+
+    ViewData["Tittle"] = "Categorias";
+
+}
+
+<div class="container">
+    <h1> Categoria</h1>
+    <h5>
+        La Categoria nos permite indicar en que gastamos nuestro dinero, tambien, de donde provienen nuestros ingresos.
+    </h5>
+
+    <a asp-action="Crear" class="btn btn-primary mb-3"> Crear nuevo</a>
+    
+    
+    <table class="table custom-table">
+        <thead>
+            <tr>
+                <th class="text-center">Acciones</th>
+                <th class="text-center">Nombre</th>
+                <th class="text-center">Tipo</th>
+
+            </tr>
+        </thead>
+        <tbody id="reordenable">
+            @foreach (var categorias in Model)
+            {
+                <tr>
+                    <td class="text-center" >
+                        <input type="hidden" value="@categorias.Id" class="ids" />
+                        <a asp-action="Editar" asp-route-id="@categorias.Id" class="btn btn-primary">Editar</a>
+                        <a asp-action="Borrar" asp-route-id="@categorias.Id" class="btn btn-danger  ml-2">Borrar</a>
+                    </td>
+                    <td class="text-center">@categorias.Nombre
+                    </td>
+                    <td class="text-center">
+                        @categorias.TipoOperacionId.ToString()
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+    
+
+
+</div>
+@section Scripts {
+    <script>
+        const urlOrdenar = '@Url.Action("Ordenar")';
+        $(function () {
+            $("#reordenable").sortable({
+                stop: async function (e, ui) {
+                    await actualizarOrdenDeCategorias();
+                }
+            });
+
+            async function actualizarOrdenDeCategorias() {
+                const ids = obtenerIdsDeElementos();
+                await enviarIdsBackend(ids);
+            }
+
+            function obtenerIdsDeElementos() {
+                const ids = $(".ids").map(function () {
+                    return $(this).val();
+                }).get();
+                return ids;
+            }
+
+            async function enviarIdsBackend(ids) {
+                var data = JSON.stringify(ids);
+
+                await fetch(urlOrdenar, {
+                    method: 'POST',
+                    body: data,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+            }
+        })
+    </script>
+}

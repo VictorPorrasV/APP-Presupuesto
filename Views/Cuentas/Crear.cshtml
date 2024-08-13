@@ -1,0 +1,66 @@
+﻿@model CuentasVM
+
+@{
+    ViewData["Title"] = "Crear Cuenta";
+}
+<div class="container">
+    <h1>Crear Cuenta</h1>
+    <h5>
+        La cuenta se refiere a los distintos balances que tienes: Tarjeta de crédito, cuenta de ahorro, préstamo, etc.
+    </h5>
+
+    <form asp-action="Crear" id="form_id" novalidate class="mt-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="mb-3">
+            <label asp-for="Nombre" class="form-label">Nombre</label>
+            <input asp-for="Nombre" class="form-control" />
+            <span asp-validation-for="Nombre" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="TipoCuentaId" class="form-label">Tipo de Cuenta</label>
+            <select asp-for="TipoCuentaId" asp-items="Model.TiposCuentas" class="form-select"></select>
+            <span asp-validation-for="TipoCuentaId" class="text-danger"></span>
+        </div>
+
+
+
+        <div class="mb-3">
+            <label asp-for="Balance" class="form-label" >Balance </label>
+            <input asp-for="Balance" type="number"class="form-control" value="0" />
+            <span asp-validation-for="Balance" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Descripcion" class="form-label">Descripción</label>
+            <textarea asp-for="Descripcion" class="form-control" rows="4"></textarea>
+            <span asp-validation-for="Descripcion" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Enviar</button>
+        <a class="btn btn-secondary" asp-action="Index">Cancelar</a>
+    </form>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        
+            $(function () {
+                $('input[type=number]').on('input', function () {
+                    // Obtener el valor actual del campo
+                    var value = $(this).val();
+
+                    // Permitir el guion solo si no es el primer carácter y no hay más de un guion
+                    if (value.indexOf('-') > 0 || (value.indexOf('-') === 0 && value.lastIndexOf('-') > 0)) {
+                        $(this).val(value.replace('-', '')); // Eliminar el guion adicional
+                    }
+                });
+            });
+ 
+
+    </script>
+}

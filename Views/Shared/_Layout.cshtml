@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - APP_Presupuesto</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/APP_Presupuesto.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Table.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/404.css" asp-append-version="true" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+   <header>
+        <nav class="navbar navbar-expand-lg navbar-dark custom-nav">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">APP_Presupuesto</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="tiposCuentasDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Tipos cuentas
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="tiposCuentasDropdown">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="TiposCuentas" asp-action="Index">Ver tipos cuentas</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="TiposCuentas" asp-action="Crear">Crear nuevo tipo cuenta</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="cuentasDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Cuentas
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="cuentasDropdown">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Cuentas" asp-action="Index">Visualizar cuentas</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Cuentas" asp-action="Crear">Crear nueva cuenta</a></li>
+
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="CategoriasDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Categorias
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="cuentasDropdown">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Categorias" asp-action="Index">Visualizar categorias</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Categorias" asp-action="Crear">Crear nueva categorias</a></li>
+
+                            </ul>
+                        </li>
+                       
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <footer class="border-top footer bg-dark text-light fixed-bottom d-flex align-items-center" style="height: 80px;">
+        <div class="container d-flex justify-content-center align-items-center">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2024 - <a class="text-light" asp-area="" asp-controller="Home" asp-action="Index">APP_Presupuesto</a> - <a class="text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></p>
+            </div>
+        </div>
+    </footer>
+
+
+    
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-ui-1.13.3/jquery-ui-1.13.3/jquery-ui.min.js"></script>
+  
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
