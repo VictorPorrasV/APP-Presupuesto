@@ -119,7 +119,7 @@ namespace APP_Presupuesto.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Editar(int id)
+        public async Task<IActionResult> Editar(int id,string urlRetorno=null)
         {
             var usuarioId = servicioUsuarios.ObtenerUsuarioID();
             var transaccion= await repositorioTransacciones.ObtenerTransaccionPorID(id, usuarioId); 
@@ -139,6 +139,7 @@ namespace APP_Presupuesto.Controllers
             modelo.cuentaAnteriorId = transaccion.CuentaId;
             modelo.Categorias = await GetCategorias(usuarioId, transaccion.TipoOperacionId);
             modelo.Cuentas = await GetCuentas(usuarioId);
+            modelo.UrlRetorno= urlRetorno;
             return View(modelo);
 
         }
@@ -174,16 +175,23 @@ namespace APP_Presupuesto.Controllers
             if(modelo.TipoOperacionId== TipoOperaciones.Gasto)
             {
 
-                transaccion.Monto *= 1;
+                transaccion.Monto *= -1;
             }
             await repositorioTransacciones.Actualizar(transaccion, modelo.MontoAnterior, modelo.cuentaAnteriorId);
-            return RedirectToAction("Index");
+            if(string.IsNullOrEmpty(modelo.UrlRetorno))
+            {
+                return RedirectToAction("Index");
+            }
+            else{
+                return LocalRedirect(modelo.UrlRetorno);    
+            }
+            
 
         }
 
 
         [HttpPost]
-        public async Task<IActionResult>Borrar (int id)
+        public async Task<IActionResult>Borrar (int id, string urlRetorno = null)
         {
 
             var usuarioId = servicioUsuarios.ObtenerUsuarioID();
@@ -193,11 +201,18 @@ namespace APP_Presupuesto.Controllers
                 return RedirectToAction("NoEncontrado", "Home");
             }
             await repositorioTransacciones.Borrar(id);
-            return RedirectToAction("Index");
+
+            if (string.IsNullOrEmpty(urlRetorno))
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return LocalRedirect(urlRetorno);
+            }
+            
 
         }
-
-
 
     }
 }
