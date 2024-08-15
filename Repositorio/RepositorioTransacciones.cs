@@ -96,8 +96,33 @@ namespace APP_Presupuesto.Repositorio
 
 
         }
+
+        public async Task<IEnumerable<Transacciones>> ObtenerPorUsuarioId(ParametroObtenerTransaccionesPorUsuario modelo)
+        {
+            using var connection = new SqlConnection(connectionString);
+
+            return await connection.QueryAsync<Transacciones>(@"
+                            
+                            select t.id, t.Monto,t.FechaTransaccion,c.Nombre as Categoria, 
+                            cu.Nombre as Cuenta ,t.Nota as Descripcion,c.TipoOperacionId
+
+
+                            from
+                            Transacciones t 
+                            inner Join Categorias c
+                            on c.Id= T.CategoriaId
+                            inner Join cuentas cu
+                            on cu.Id = t.CuentaId
+                            where t.UsuarioId =  @usuarioId
+                            and FechaTransaccion between @FechaInicio and @Fechafin 
+                            Order by t.FechaTransaccion DESC", modelo);
+
+
+        }
     }
 
-
-   
 }
+
+    
+
+

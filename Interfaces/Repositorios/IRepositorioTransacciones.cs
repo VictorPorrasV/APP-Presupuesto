@@ -10,5 +10,6 @@ namespace APP_Presupuesto.Interfaces.Repositorios
 
         Task Borrar(int id);
         Task<IEnumerable<Transacciones>> ObtenerPorCuentaId(ObtenerTransaccionesPorCuenta modelo);
+        Task<IEnumerable<Transacciones>> ObtenerPorUsuarioId(ParametroObtenerTransaccionesPorUsuario modelo);
     }
 }

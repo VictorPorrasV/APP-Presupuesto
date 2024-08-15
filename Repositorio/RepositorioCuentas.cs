@@ -41,7 +41,7 @@ namespace APP_Presupuesto.Repositorio
         {
             using var connection = new SqlConnection(connectionString);
             return await connection.QueryFirstOrDefaultAsync<Cuentas>(
-                                 @"select Cuentas.Id,Cuentas.Nombre,Balance,Descripcion,Tc.id
+                                 @"select Cuentas.Id,Cuentas.Nombre,Balance,Descripcion,TipoCuentaId
                                     from cuentas 
                                     inner join TiposCuentas tc on tc.Id = cuentas.TipoCuentaId
                                     where tc.UsuarioId= @usuarioid and Cuentas.Id=@id", new { id,usuarioid });

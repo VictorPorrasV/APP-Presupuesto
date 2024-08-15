@@ -1,6 +1,7 @@
 ﻿using APP_Presupuesto.Interfaces.Repositorios;
 using APP_Presupuesto.Interfaces.Servicios;
 using APP_Presupuesto.Models;
+using APP_Presupuesto.Servicios;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,21 +19,27 @@ namespace APP_Presupuesto.Controllers
         private readonly IRepositorioCategorias repositorioCategorias;
         private readonly IRepositorioTransacciones repositorioTransacciones;
         private readonly IMapper mapper;
+        private readonly IServicioReportes servicioReportes;
 
-        public TransaccionesController(IServicioUsuarios servicioUsuarios,IRepositorioCuentas repositorioCuentas, IRepositorioCategorias repositorioCategorias,IRepositorioTransacciones repositorioTransacciones,IMapper mapper)
+        public TransaccionesController(IServicioUsuarios servicioUsuarios,IRepositorioCuentas repositorioCuentas, IRepositorioCategorias repositorioCategorias,IRepositorioTransacciones repositorioTransacciones,IMapper mapper, IServicioReportes servicioReportes)
         {
             this.servicioUsuarios = servicioUsuarios;
             this.repositoriocuentas = repositorioCuentas;
             this.repositorioCategorias = repositorioCategorias;
             this.repositorioTransacciones = repositorioTransacciones;
             this.mapper = mapper;
+            this.servicioReportes = servicioReportes;
+
         }
 
 
 
-        public IActionResult Index()
+        public async Task< IActionResult> Index(int mes,int año)
         {
-            return View();  
+            var usuarioId = servicioUsuarios.ObtenerUsuarioID();
+            var modelo = await servicioReportes
+                .ObtenerReporteTransaccionesDetalladas(usuarioId, mes, año, ViewBag);
+            return View(modelo);
         }
 
 
@@ -210,9 +217,8 @@ namespace APP_Presupuesto.Controllers
             {
                 return LocalRedirect(urlRetorno);
             }
-            
-
         }
+
 
     }
 }

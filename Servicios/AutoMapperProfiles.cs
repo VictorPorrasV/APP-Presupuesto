@@ -3,10 +3,11 @@ using AutoMapper;
 
 namespace APP_Presupuesto.Servicios
 {
-    public class AutoMapperProfiles: Profile
+    public class AutoMapperProfiles : Profile
     {
 
-        public AutoMapperProfiles() {
+        public AutoMapperProfiles()
+        {
 
             CreateMap<Cuentas, CuentasVM>();
             CreateMap<VMTransaccionActualizacion, Transacciones>();
