@@ -43,6 +43,12 @@ namespace APP_Presupuesto.Controllers
 
             return View(modelo);
         }
+        private async Task<IEnumerable<SelectListItem>> ObtenerTiposCuentas(int usuarioId)
+        {
+            var tipoCuentas = await repositorioTipoCuenta.Obtener(usuarioId);
+            //texto                Valor html
+            return tipoCuentas.Select(x => new SelectListItem(x.Nombre.ToString(), x.id.ToString()));
+        }
 
         [HttpPost]
         public async Task<IActionResult> Crear(CuentasVM cuentas)
@@ -65,12 +71,7 @@ namespace APP_Presupuesto.Controllers
             return RedirectToAction("Index");
         }
 
-        private async Task<IEnumerable<SelectListItem>> ObtenerTiposCuentas(int usuarioId)
-        {
-            var tipoCuentas = await repositorioTipoCuenta.Obtener(usuarioId);
-            //texto                Valor html
-            return tipoCuentas.Select(x => new SelectListItem(x.Nombre.ToString(), x.id.ToString()));
-        }
+        
         [HttpGet]
         public async Task<IActionResult> Index()
         {

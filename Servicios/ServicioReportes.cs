@@ -35,8 +35,7 @@ namespace APP_Presupuesto.Servicios
         //    return modelo;
         //}
 
-        public async Task<ReporteTransaccionesDetalladas>
-            ObtenerReporteTransaccionesDetalladas(int usuarioId, int mes, int año, dynamic ViewBag)
+        public async Task<ReporteTransaccionesDetalladas>ObtenerReporteTransaccionesDetalladas(int usuarioId, int mes, int año, dynamic ViewBag)
         {
             (DateTime fechaInicio, DateTime fechaFin) = GenerarFechaInicioYFin(mes, año);
 
@@ -55,9 +54,7 @@ namespace APP_Presupuesto.Servicios
             return modelo;
         }
 
-        public async Task<ReporteTransaccionesDetalladas>
-            ObtenerReporteTransaccionesDetalladasPorCuenta(int usuarioId, int cuentaId,
-            int mes, int año, dynamic ViewBag)
+        public async Task<ReporteTransaccionesDetalladas> ObtenerReporteTransaccionesDetalladasPorCuenta( int usuarioId, int cuentaId, int mes, int año, dynamic ViewBag)
         {
             (DateTime fechaInicio, DateTime fechaFin) = GenerarFechaInicioYFin(mes, año);
 

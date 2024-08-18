@@ -1,0 +1,46 @@
+﻿@model SubMenuTransacciones  //enum
+
+
+<ul class="nav nav-pills nav-fill mb-3">
+    <li class="nav-item mx-2">
+        <a class="nav-link btn-custom @(Model== SubMenuTransacciones.Diario? "active": null)" 
+        asp-action="Index">Diario</a>
+    </li>
+    <li class="nav-item mx-2">
+        <a class="nav-link btn-custom  @(Model== SubMenuTransacciones.Semanal? "active": null)"
+        asp-action="Semanal">Semanal</a>
+    </li>
+    <li class="nav-item mx-2">
+        <a class="nav-link btn-custom  @(Model== SubMenuTransacciones.Mensual? "active": null)"
+        asp-action="Mensual">Mensual</a>
+    </li>
+    <li class="nav-item mx-2">
+        <a class="nav-link btn-custom  @(Model== SubMenuTransacciones.Excel? "active": null)
+        " asp-action="ExcelReporte">Excel</a>
+    </li>
+    <li class="nav-item mx-2">
+        <a class="nav-link btn-custom  @(Model== SubMenuTransacciones.Calendario? "active": null)"
+        asp-action="Calendario">Calendario</a>
+    </li>
+</ul>
+
+<style>
+    .btn-custom {
+        background-color: #14213d !important; /* Azul oscuro */
+        color: white !important;
+        border: 1px solid transparent;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        border-radius: 5px !important; /* Esquinas cuadradas */
+        padding: 10px 20px; /* Espaciado dentro del botón */
+        margin-top:10px
+    }
+
+        .btn-custom:hover {
+            background-color: black !important;
+            color: white !important;
+        }
+
+    .nav-link.active {
+        background-color: #0d47a1 !important; /* Azul oscuro para el botón activo */
+    }
+</style>
