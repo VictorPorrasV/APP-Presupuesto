@@ -1,8 +1,46 @@
-﻿
+﻿@model ReporteSemanalViewModel
 @{
 
     ViewData["Tittle"] = "Reporte Semanal";
 
+    string FormatearFecha(DateTime fecha)
+    {
+        return fecha.ToString("MM.dd");
+    }
 }
 
 <partial name="_SubMenu" Model="SubMenuTransacciones.Semanal" />
+
+
+
+
+
+
+<table class="table table-dark">
+
+
+    <thead>
+        <tr>
+            <th>Semana</th>
+            <th>Ingresos</th>
+            <th>Gastos</th>
+            
+        </tr>
+    </thead>
+  
+        @foreach (var transaccionAgrupada in Model.TransaccionesPorSemana)
+        {
+            <tr>
+                <td>
+                    <a style="text-decoration: none" asp-action="Index" asp-route-año="@Model.FechaReferencia.Year" asp-route-mes="@Model.FechaReferencia.Month">
+                        @FormatearFecha(transaccionAgrupada.FechaInicio)~ @FormatearFecha(transaccionAgrupada.FechaInicio)~
+                        @FormatearFecha(transaccionAgrupada.FechaFin)
+                     </a>
+                    
+                </td>
+               
+            </tr>
+
+          
+            }
+</table>

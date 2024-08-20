@@ -221,20 +221,93 @@ namespace APP_Presupuesto.Controllers
 
 
 
-
-        public IActionResult Semanal()
+        [HttpGet]
+        public async Task<IActionResult> Semanal(int mes, int año)
         {
-            return View();  
+            // Obtener el ID del usuario desde un servicio
+            var usuarioId = servicioUsuarios.ObtenerUsuarioID();
+
+            // Obtener las transacciones semanales para el usuario específico, mes y año
+            IEnumerable<ResultadoObtenerPorSemana> transaccionesPorSemana = await servicioReportes.ReporteSemanal(usuarioId, mes, año, ViewBag);
+
+            // Agrupar las transacciones por semana y calcular los ingresos y gastos
+            var agrupar = transaccionesPorSemana.GroupBy(x => x.Semana).Select(x => new ResultadoObtenerPorSemana()
+            {
+                Semana = x.Key,
+                Ingresos = x.Where(x => x.TipoOperacionId == TipoOperaciones.Ingreso)
+                            .Select(x => x.Monto).FirstOrDefault(),
+
+                Gastos = x.Where(x => x.TipoOperacionId == TipoOperaciones.Gasto)
+                          .Select(x => x.Monto).FirstOrDefault(),
+            }).ToList();
+
+            // Si el año o mes son 0, usar el año y mes actuales
+            if (año == 0 || mes == 0)
+            {
+                var hoy = DateTime.Today;
+                año = hoy.Year;
+                mes = hoy.Month;
+            }
+
+            // Crear un objeto DateTime para el primer día del mes
+            var fechaReferencia = new DateTime(año, mes, 1);
+
+            // Obtener todos los días del mes y dividirlos en semanas
+            var diaDelmes = Enumerable.Range(1, fechaReferencia.AddMonths(1).AddDays(-1).Day);
+            var diasSegmentados = diaDelmes.Chunk(7).ToList(); // Dividir en semanas
+
+            for (int i = 0; i < diasSegmentados.Count; i++)
+            {
+                var semana = i + 1;
+                var fechaInicio = new DateTime(año, mes, diasSegmentados[i].FirstOrDefault());
+                var fechaFin = new DateTime(año, mes, diasSegmentados[i].Last());
+
+                // Verificar si la semana ya está en el agrupamiento
+                var grupoSemana = agrupar.FirstOrDefault(x => x.Semana == semana);
+                if (grupoSemana != null)
+                {
+                    // Si existe, actualizar las fechas
+                    grupoSemana.FechaInicio = fechaInicio;
+                    grupoSemana.FechaFin = fechaFin;
+                }
+                else
+                {
+                    // Si no existe, agregar una nueva entrada con las fechas
+                    agrupar.Add(new ResultadoObtenerPorSemana()
+                    {
+                        Semana = semana,
+                        FechaInicio = fechaInicio,
+                        FechaFin = fechaFin
+                    });
+                }
+            }
+
+            // Ordenar las semanas de forma descendente
+            agrupar = agrupar.OrderByDescending(x => x.Semana).ToList();
+
+            // Crear el modelo para la vista
+            var modelo = new ReporteSemanalViewModel();
+            modelo.TransaccionesPorSemana = agrupar;
+            modelo.FechaReferencia = fechaReferencia;
+
+            // Pasar el modelo a la vista
+            return View(modelo);
         }
+
+
+
+
+        [HttpGet]
         public IActionResult Mensual()
         {
             return View();
         }
+        [HttpGet]
         public IActionResult ExcelReporte()
         {
             return View();
         }
-        
+        [HttpGet]
         public IActionResult Calendario()
         {
             return View();

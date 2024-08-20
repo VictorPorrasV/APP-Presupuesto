@@ -119,6 +119,21 @@ namespace APP_Presupuesto.Repositorio
 
 
         }
+    
+        public async Task<IEnumerable<ResultadoObtenerPorSemana>> ObtenerPorSemana( ParametroObtenerTransaccionesPorUsuario modelo)
+        {
+             using var connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<ResultadoObtenerPorSemana>(@"
+                        Select datediff(d,@fechainicio,FechaTransaccion) / 7 + 1 as Semana,SUM(Monto) as Monto , cat.TipoOperacionId
+                        
+                        from Transacciones
+                        
+                        inner join Categorias cat on cat.Id= Transacciones.CategoriaId
+                        
+                        where Transacciones.UsuarioId=@usuarioid and FechaTransaccion Between @FechaInicio and @Fechafin
+                        
+                        Group By  datediff(d,@fechainicio,FechaTransaccion) / 7,cat.TipoOperacionId;",modelo);
+        }
     }
 
 }
